@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   },
   
   // Uncomment and set to your repo name when deploying to GitHub Pages
-  // basePath: "/aio-tools",
+  basePath: "/aio-tools",
 };
 
 export default nextConfig;
