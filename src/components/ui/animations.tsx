@@ -137,3 +137,150 @@ export function ScaleIn({ children, className, delay = 0 }: ScaleInProps) {
     </div>
   );
 }
+
+/**
+ * Page wrapper that fades in content on mount
+ */
+interface PageTransitionProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function PageTransition({ children, className }: PageTransitionProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  return (
+    <div
+      className={cn(
+        "transition-all duration-500",
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Animated card that scales on hover and fades in on mount
+ */
+interface AnimatedCardProps {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  hover?: boolean;
+}
+
+export function AnimatedCard({ children, className, delay = 0, hover = true }: AnimatedCardProps) {
+  return (
+    <FadeIn delay={delay} className={cn(hover && "transition-transform hover:scale-[1.02] hover:shadow-lg", className)}>
+      {children}
+    </FadeIn>
+  );
+}
+
+/**
+ * Button with ripple effect on click
+ */
+interface AnimatedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+}
+
+export function AnimatedButton({ children, className, onClick, ...props }: AnimatedButtonProps) {
+  const [ripple, setRipple] = useState<{ x: number; y: number } | null>(null);
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setRipple({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    setTimeout(() => setRipple(null), 500);
+    onClick?.(e);
+  };
+
+  return (
+    <button
+      className={cn("relative overflow-hidden", className)}
+      onClick={handleClick}
+      {...props}
+    >
+      {children}
+      {ripple && (
+        <span
+          className="absolute bg-white/30 rounded-full animate-ripple pointer-events-none"
+          style={{
+            left: ripple.x - 10,
+            top: ripple.y - 10,
+            width: 20,
+            height: 20,
+          }}
+        />
+      )}
+    </button>
+  );
+}
+
+/**
+ * Staggered grid for tool cards or similar items
+ */
+interface StaggeredGridProps {
+  children: React.ReactNode[];
+  className?: string;
+  itemClassName?: string;
+  staggerDelay?: number;
+}
+
+export function StaggeredGrid({ children, className, itemClassName, staggerDelay = 50 }: StaggeredGridProps) {
+  return (
+    <div className={className}>
+      {children.map((child, index) => (
+        <FadeIn key={index} delay={index * staggerDelay} className={itemClassName}>
+          {child}
+        </FadeIn>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Success checkmark animation
+ */
+export function SuccessCheck({ className }: { className?: string }) {
+  return (
+    <div className={cn("animate-success text-green-500", className)}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-full h-full">
+        <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" className="animate-draw-check" />
+      </svg>
+    </div>
+  );
+}
+
+/**
+ * Skeleton loading placeholder
+ */
+interface SkeletonProps {
+  className?: string;
+  variant?: "text" | "circular" | "rectangular";
+}
+
+export function Skeleton({ className, variant = "text" }: SkeletonProps) {
+  const variantClasses = {
+    text: "h-4 rounded",
+    circular: "rounded-full",
+    rectangular: "rounded-lg",
+  };
+
+  return (
+    <div
+      className={cn(
+        "bg-muted animate-pulse",
+        variantClasses[variant],
+        className
+      )}
+    />
+  );
+}

@@ -1,4 +1,4 @@
-export type IconName = "file-archive" | "code" | "image" | "file-json";
+export type IconName = "file-archive" | "code" | "image" | "file-json" | "qr-code";
 
 export interface ToolLibrary {
   name: string;
@@ -68,6 +68,20 @@ export const tools: Tool[] = [
     },
   },
   {
+    id: "json-formatter",
+    name: "JSON Formatter",
+    description: "Format, validate, and minify JSON with syntax highlighting",
+    iconName: "file-json",
+    href: "/tools/json-formatter",
+    category: "developer",
+    isAvailable: true,
+    credits: {
+      author: "Mubtasim Hasan",
+      repoUrl: "https://github.com/MubTaXim",
+      license: "MIT",
+    },
+  },
+  {
     id: "image-optimizer",
     name: "Image Optimizer",
     description: "Compress and optimize images for web without quality loss",
@@ -77,13 +91,21 @@ export const tools: Tool[] = [
     isAvailable: false,
   },
   {
-    id: "json-formatter",
-    name: "JSON Formatter",
-    description: "Format, validate, and minify JSON with syntax highlighting",
-    iconName: "file-json",
-    href: "/tools/json-formatter",
-    category: "developer",
-    isAvailable: false,
+    id: "qr-code-generator",
+    name: "QR Code Generator Pro",
+    description: "Generate professional QR codes with custom colors, logos, and frames",
+    iconName: "qr-code",
+    href: "/tools/qr-code-generator",
+    category: "media",
+    isAvailable: true,
+    credits: {
+      author: "Mubtasim Hasan",
+      repoUrl: "https://github.com/MubTaXim",
+      license: "MIT",
+      libraries: [
+        { name: "qrcode", url: "https://github.com/soldair/node-qrcode" },
+      ],
+    },
   },
 ];
 

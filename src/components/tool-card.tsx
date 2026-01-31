@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FileArchive, Code, Image, FileJson } from "lucide-react";
+import { FileArchive, Code, Image, FileJson, QrCode } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Tool, IconName } from "@/lib/tools/registry";
@@ -11,6 +11,7 @@ const iconMap: Record<IconName, React.ComponentType<{ className?: string }>> = {
   "code": Code,
   "image": Image,
   "file-json": FileJson,
+  "qr-code": QrCode,
 };
 
 interface ToolCardProps {
